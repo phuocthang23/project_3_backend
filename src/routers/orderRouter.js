@@ -6,8 +6,12 @@ import express from "express";
 const router = express.Router();
 
 router.post("/", [checkAuthentication], controller.createOrderController);
-// router.get("/", [checkAuthentication, verifyRole], controller.createAddress);
-// router.get("/:id", [checkAuthentication], controller.getOneAddress);
+router.get(
+  "/",
+  [checkAuthentication, verifyRole],
+  controller.getAllOrderController
+);
+router.get("/one", [checkAuthentication], controller.getAllOrderByUser);
 // router.put("/:id", [checkAuthentication], controller.updateAddress);
 // router.delete("/:id", [checkAuthentication], controller.deleteAddress);
 

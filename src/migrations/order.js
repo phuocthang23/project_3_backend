@@ -21,12 +21,12 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      total: {
-        type: Sequelize.BIGINT,
-        allowNull: false,
-      },
       status: {
         type: Sequelize.STRING,
+        allowNull: false,
+      },
+      codeOrder: {
+        type: Sequelize.INTEGER,
         allowNull: false,
       },
       createdAt: {

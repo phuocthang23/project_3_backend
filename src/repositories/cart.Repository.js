@@ -46,7 +46,7 @@ export const createCartRepository = async (body) => {
 export const getAllCartRepository = async () => {
   return db.Cart.findAll({
     attributes: {
-      exclude: ["createdAt", "updatedAt", "productSizeId"],
+      exclude: ["createdAt", "updatedAt"],
     },
     include: [
       //* sizeProduct

@@ -6,6 +6,6 @@ import express from "express";
 const router = express.Router();
 
 router.post("/", [checkAuthentication], controller.createOrderItem);
-// router.get("/", controller.getAllCart);
+router.get("/", controller.getAllOrderController);
 router.get("/one", [checkAuthentication], controller.getAllOrderItemByUser);
 module.exports = router;

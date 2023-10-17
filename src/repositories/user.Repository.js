@@ -75,7 +75,6 @@ export const getOneByUserServices = async ({ id }) => {
 };
 
 export const changeStatusUserServices = async ({ id }) => {
-  console.log(id);
   try {
     if (!id) {
       throw new Error("Bad request");
@@ -108,8 +107,7 @@ export const changeStatusUserServices = async ({ id }) => {
       data: change,
     };
   } catch (error) {
-    console.log(">>>>", error);
-    throw error;
+    return error;
   }
 };
 

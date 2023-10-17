@@ -9,11 +9,15 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      cartId: {
+      quantity: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      orderId: {
+      sizeProductId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      codeOrder: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },

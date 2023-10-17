@@ -4,45 +4,45 @@ export const createOrderItemRepository = async (data) => {
   // Get the cart item
   const cartItem = await db.Cart.findAll({
     where: { userId: data.userId },
+    attributes: {
+      exclude: ["createdAt", "updatedAt"],
+    },
   });
-  console.log(cartItem, "cart");
 
   if (!cartItem) {
     return { message: "Không tìm thấy mục trong giỏ hàng" };
   }
 
-  // Create a new order item with the data from the cart item
-  const newOrder = await db.Order.create({
-    userId: data.userId,
-  });
+  const min = 100000000;
+  const max = 999999999;
+  const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+  const createOrder = cartItem.map((item) => ({
+    sizeProductId: item.productSizeId,
+    codeOrder: randomNumber,
+    quantity: item.quantity,
+  }));
 
-  // Delete all cart by user
-  await db.Cart.destroy({
-    where: { userId: data.userId },
-  });
+  console.log(createOrder, "createOrder");
+  // // Create a new order item with the data from the cart item
+  // const newOrderItems = [];
 
-  return {
-    message: "Mục đơn hàng đã được tạo thành công",
-    newOrderItem: newOrderItem,
-  };
+  const newOrderItem = await db.OrderItems.bulkCreate(createOrder);
+  console.log(newOrderItem, "newOrderItem");
 
-  //   const response = await db.OrderItems.findOrCreate({
-  //     where: { cartId },
-  //     defaults: { cartId, orderId },
-  //   });
-  //   return response;
+  return newOrderItem;
 };
+
 export const getAllOrderItemRepository = async () => {
   const data = await db.OrderItems.findAll({
-    // include: [
-    //   {
-    //     model: db.Carts,
-    //     as: "carts",
-    //     attributes: {
-    //       exclude: ["createdAt", "updatedAt"],
-    //     },
-    //   },
-    // ],
+    include: [
+      {
+        model: db.Orders,
+        as: "orderProduct",
+        attributes: {
+          exclude: ["createdAt", "updatedAt"],
+        },
+      },
+    ],
     attributes: {
       exclude: ["createdAt", "updatedAt"],
     },
@@ -53,18 +53,18 @@ export const getAllOrderItemRepository = async () => {
 export const getOrderItemByUserRepository = async ({ id }) => {
   const data = await db.OrderItems.findAll({
     where: { userId: id },
-    include: [
-      {
-        model: db.Carts,
-        as: "carts",
-        where: {
-          userId: id,
-        },
-        attributes: {
-          exclude: ["createdAt", "updatedAt"],
-        },
-      },
-    ],
+    // include: [
+    //   {
+    //     model: db.Carts,
+    //     as: "carts",
+    //     where: {
+    //       userId: id,
+    //     },
+    //     attributes: {
+    //       exclude: ["createdAt", "updatedAt"],
+    //     },
+    //   },
+    // ],
     attributes: {
       exclude: ["createdAt", "updatedAt"],
     },

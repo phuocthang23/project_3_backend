@@ -9,7 +9,7 @@ import size from "./sizeRouter";
 import sizeProduct from "./sizeProductRouter";
 import wishlist from "./wishlistRouter";
 import cart from "./cartRouter";
-import order from "./orderRouter";
+import orderindex from "./orderRouter";
 import orderItem from "./orderItemRouter";
 
 const initRouters = (app) => {
@@ -26,7 +26,7 @@ const initRouters = (app) => {
   app.use(`${initLink}/sizeProduct`, sizeProduct);
   app.use(`${initLink}/wishlist`, wishlist);
   app.use(`${initLink}/cart`, cart);
-  app.use(`${initLink}/order`, order);
+  app.use(`${initLink}/orderindex`, orderindex);
   app.use(`${initLink}/orderItem`, orderItem);
 };
 

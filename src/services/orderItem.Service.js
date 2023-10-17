@@ -27,6 +27,20 @@ export const getOneOrderItemServices = async (id) => {
       return { success: false, message: "Not found" };
     }
   } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
+
+export const getAllOrderItem = async () => {
+  try {
+    const response = await repository.getAllOrderItemRepository();
+    return {
+      success: true,
+      data: response,
+    };
+  } catch (error) {
+    console.log(error);
     return error;
   }
 };

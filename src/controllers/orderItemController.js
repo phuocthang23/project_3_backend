@@ -27,3 +27,13 @@ export const getAllOrderItemByUser = async (req, res) => {
     // return internalServerError(res);
   }
 };
+
+export const getAllOrderController = async (req, res) => {
+  try {
+    const response = await services.getAllOrderItem();
+    console.log(response);
+    return res.status(200).json(response);
+  } catch (error) {
+    // return internalServerError(res);
+  }
+};
