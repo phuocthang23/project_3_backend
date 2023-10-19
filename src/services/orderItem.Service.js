@@ -17,11 +17,11 @@ export const getOneOrderItemServices = async (id) => {
     if (!id) {
       throw new Error("Bad request");
     }
-    const response = await repository.getOneOrderItemRepository({ id });
+    const response = await repository.getOrderItemByUserRepository(id);
     if (response !== null) {
       return {
         success: true,
-        data: response.dataValues,
+        data: response,
       };
     } else {
       return { success: false, message: "Not found" };

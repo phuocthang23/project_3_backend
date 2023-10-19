@@ -2,7 +2,7 @@ import * as services from "../services/cart.Service";
 
 export const createCart = async (req, res) => {
   try {
-    //   console.log(req.body);
+    console.log(req.body);
     const { id } = req.user;
     const data = {
       ...req.body,

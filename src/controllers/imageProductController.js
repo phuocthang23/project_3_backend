@@ -1,7 +1,10 @@
 import * as services from "../services";
 export const createImageProductController = async (req, res) => {
   try {
-    const data = req?.files?.map((el) => ({ src: el.path, ...req.body }));
+    const data = req?.files?.map((el) => ({
+      src: el.path,
+      productId: +req.body.productId,
+    }));
     const response = await services.createImageProductService(data);
     return res.status(200).json(response);
   } catch (error) {

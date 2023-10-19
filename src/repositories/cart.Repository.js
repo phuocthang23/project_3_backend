@@ -14,7 +14,7 @@ export const createCartRepository = async (body) => {
     // If the product is already in the cart and is the same size, update the quantity
     const newCart = await db.Cart.update(
       {
-        quantity: existingItem.quantity + body.quantity,
+        quantity: existingItem.quantity + +body.quantity,
       },
       {
         where: {
@@ -30,9 +30,9 @@ export const createCartRepository = async (body) => {
   } else {
     // If the product is not in the cart, create a new cart
     const newCart = await db.Cart.create({
-      userId: body.userId,
-      productSizeId: body.productSizeId,
-      quantity: body.quantity,
+      userId: +body.userId,
+      productSizeId: +body.productSizeId,
+      quantity: +body.quantity,
     });
     return {
       message: "The product is added in the cart",
@@ -116,6 +116,15 @@ export const getAllCartByUserRepository = async ({ id }) => {
             attributes: {
               exclude: ["createdAt", "updatedAt", "id"],
             },
+            include: [
+              {
+                model: db.imageProducts,
+                as: "image",
+                attributes: {
+                  exclude: ["createdAt", "updatedAt", "productId"],
+                },
+              },
+            ],
           },
         ],
       },

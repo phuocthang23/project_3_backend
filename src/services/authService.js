@@ -16,46 +16,45 @@ let hasUserPassword = (password) => {
     }
   });
 };
-export const createUserServices = ({
-  firstName,
-  lastName,
-  email,
-  password,
-  avatar,
-}) =>
-  new Promise(async (resolve, reject) => {
-    try {
-      let hashPassword = await hasUserPassword(password);
-      const defaultAvatar =
-        "https://cdn-icons-png.flaticon.com/512/149/149071.png";
-      const response = await db.User.findOrCreate({
-        where: { email },
-        defaults: {
-          firstName,
-          lastName,
-          email,
-          password: hashPassword,
-          avatar: defaultAvatar,
-        },
-      });
-      resolve({
-        success: response[1] === true ? true : false,
-        message:
-          response[1] === true
-            ? "Create user successfully"
-            : "User is available",
-      });
-    } catch (error) {
-      console.log(error);
-      reject(error);
-    }
-  });
+export const createUserServices = async (body) => {
+  console.log(body);
+  try {
+    let hashPassword = await hasUserPassword(body.password);
+    const defaultAvatar =
+      "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+    const response = await db.User.findOrCreate({
+      where: { email: body.email },
+      defaults: {
+        firstName: body.firstName,
+        lastName: body.lastName,
+        email: body.email,
+        password: hashPassword,
+        avatar: defaultAvatar,
+      },
+    });
+    console.log(response);
+    return {
+      success: response[1] === true ? true : false,
+      message:
+        response[1] === true ? "Create user successfully" : "User is available",
+    };
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
 
 //*=================================(login)================================
 
 export const loginUserServices = async (dataUser) => {
   try {
     const { email, password } = dataUser;
+    const regex = /^[a-z0-9](\.?[a-z0-9]){5,}@g(oogle)?mail\.com$/i;
+
+    if (!regex.test(email)) {
+      return Error("Email không hợp lệ.");
+    }
+
     const user = await db.User.findOne({
       where: { email },
       attributes: {
@@ -64,13 +63,13 @@ export const loginUserServices = async (dataUser) => {
     });
 
     if (!user) {
-      throw new Error("Không tìm thấy người dùng với email này.");
+      return Error("Không tìm thấy người dùng với email này.");
     }
 
     const checkPassword = bcrypt.compareSync(password, user.password); // kiểm tra true false
 
     if (!checkPassword) {
-      throw new Error("Mật khẩu không chính xác.");
+      return Error("Mật khẩu không chính xác.");
     }
 
     const token = generateToken(user);

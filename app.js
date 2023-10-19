@@ -10,14 +10,14 @@ app.use(express.json());
 
 // connect to database
 connectDB();
-
+const arr = ["http://localhost:5000"];
 // connect to react
-app.use(
-  cors({
-    origin: "*",
-    methods: ["GET", "POST", "DELETE", "PUT"],
-  })
-);
+const corsOptions = {
+  origin: arr,
+  credentials: true, //access-control-allow-credentials:true
+  optionSuccessStatus: 200,
+};
+app.use(cors(corsOptions));
 
 const port = process.env.APP_PORT || 3000;
 

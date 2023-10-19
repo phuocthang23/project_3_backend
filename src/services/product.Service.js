@@ -4,11 +4,11 @@ export const createProductServices = async (body) => {
   try {
     const response = await repository.createProductRepository(body);
     return {
-      success: response[1] === true ? true : false,
-      message:
-        response[1] === true
-          ? "Create product successfully"
-          : "Product is available",
+      success: response[1] ? true : false,
+      data: response[0],
+      message: response[1]
+        ? "Create product successfully"
+        : "Product is available",
     };
   } catch (error) {
     return error;
@@ -62,9 +62,9 @@ export const updateProductServices = async (id, body) => {
 
 export const deleteProductServices = async ({ id }) => {
   try {
-    if (!id) {
-      throw new Error("Bad request");
-    }
+    const response = await repository.changeStatusProductServices({ id });
+    // console.log(response);
+    return response;
   } catch (error) {
     return error;
   }

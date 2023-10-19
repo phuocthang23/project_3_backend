@@ -1,6 +1,5 @@
 import db from "../models";
 export const createProductRepository = async (body) => {
-  console.log(body);
   return db.Product.findOrCreate({
     where: {
       nameProduct: body.nameProduct,
@@ -103,8 +102,34 @@ export const updateProductRepository = async (id, body) => {
   });
 };
 
-export const deleteProductRepository = async ({ id }) => {
-  return db.Product.destroy({
-    where: { id },
-  });
+export const changeStatusProductServices = async ({ id }) => {
+  try {
+    if (!id) {
+      return new Error("Bad request");
+    }
+
+    // Lấy thông tin user hiện tại
+    const product = await db.Product.findOne({ where: { id } });
+
+    if (!product) {
+      return { success: false, message: "Product not found" };
+    }
+
+    // Chuyển đổi giá trị của trường "status"
+    const newStatus = product.status === 1 ? 0 : 1;
+
+    // Cập nhật giá trị mới cho trường "status"
+    const change = await db.Product.update(
+      { status: newStatus },
+      { where: { id } }
+    );
+
+    return {
+      success: true,
+      message: "User status updated successfully",
+      data: newStatus,
+    };
+  } catch (error) {
+    return error;
+  }
 };

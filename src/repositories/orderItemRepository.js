@@ -20,10 +20,11 @@ export const createOrderItemRepository = async (data) => {
     sizeProductId: item.productSizeId,
     codeOrder: randomNumber,
     quantity: item.quantity,
+    userId: item.userId,
   }));
 
   console.log(createOrder, "createOrder");
-  // // Create a new order item with the data from the cart item
+  // Create a new order item with the data from the cart item
   // const newOrderItems = [];
 
   const newOrderItem = await db.OrderItems.bulkCreate(createOrder);
@@ -50,24 +51,21 @@ export const getAllOrderItemRepository = async () => {
   return data;
 };
 
-export const getOrderItemByUserRepository = async ({ id }) => {
+export const getOrderItemByUserRepository = async (id) => {
   const data = await db.OrderItems.findAll({
     where: { userId: id },
-    // include: [
-    //   {
-    //     model: db.Carts,
-    //     as: "carts",
-    //     where: {
-    //       userId: id,
-    //     },
-    //     attributes: {
-    //       exclude: ["createdAt", "updatedAt"],
-    //     },
-    //   },
-    // ],
     attributes: {
       exclude: ["createdAt", "updatedAt"],
     },
+    include: [
+      {
+        model: db.ProductSize,
+        as: "productSize",
+        attributes: {
+          exclude: ["createdAt", "updatedAt"],
+        },
+      },
+    ],
   });
   return data;
 };

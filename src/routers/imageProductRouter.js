@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.post(
   "/",
-  [checkAuthentication, checkRole, uploadProduct.array("src", 3)],
+  [checkAuthentication, checkRole, uploadProduct.array("images", 5)],
   controller.createImageProductController
 );
 router.get("/", controller.getAllImageProductController);

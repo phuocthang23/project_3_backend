@@ -17,7 +17,7 @@ export const createSizeProductRepository = async (body) => {
 export const getAllSizeProductRepository = async () => {
   return db.sizeProduct.findAll({
     attributes: {
-      exclude: ["createdAt", "updatedAt", "sizeId", "productId"],
+      exclude: ["createdAt", "updatedAt"],
     },
     include: [
       {

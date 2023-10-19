@@ -7,11 +7,18 @@ export const getAllUserServices = async () => {
         exclude: ["createdAt", "updatedAt"],
       },
       include: [
+        // {
+        //   model: db.Role,
+        //   as: "role",
+        //   attributes: {
+        //     exclude: ["createdAt", "updatedAt", "id"],
+        //   },
+        // },
         {
-          model: db.Role,
-          as: "role",
+          model: db.Address,
+          as: "address",
           attributes: {
-            exclude: ["createdAt", "updatedAt", "id"],
+            exclude: ["createdAt", "updatedAt", "userId", "id"],
           },
         },
       ],
@@ -104,7 +111,7 @@ export const changeStatusUserServices = async ({ id }) => {
     return {
       success: true,
       message: "User status updated successfully",
-      data: change,
+      data: user,
     };
   } catch (error) {
     return error;
